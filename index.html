@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Distribution Map in Africa</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; }
+        .circle-label {
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cancer Distribution Across Africa</h1>
+    <div id="map"></div>
+    <script>
+        let map = L.map('map').setView([7.1881, 21.0936], 3);  // Centered on Africa
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let cancerDataAfrica = [
+            { location: [9.0820, 8.6753], cases: 150, country: "Nigeria" },
+            { location: [-1.2921, 36.8219], cases: 120, country: "Kenya" },
+            { location: [-26.2041, 28.0473], cases: 200, country: "South Africa" },
+            { location: [30.0444, 31.2357], cases: 180, country: "Egypt" },
+            { location: [6.5244, 3.3792], cases: 110, country: "Lagos, Nigeria" },
+            { location: [14.6937, -17.4441], cases: 90, country: "Senegal" },
+            { location: [36.8219, 9.0820], cases: 140, country: "Tanzania" },
+            { location: [-33.9249, 18.4241], cases: 160, country: "Cape Town, South Africa" },
+            { location: [5.6037, -0.1870], cases: 100, country: "Ghana" },
+            { location: [-4.4419, 15.2663], cases: 130, country: "DR Congo" },
+            { location: [15.4542, 18.7322], cases: 70, country: "Chad" },
+            { location: [11.8251, 42.5903], cases: 60, country: "Djibouti" },
+            { location: [7.9465, -1.0232], cases: 80, country: "Ghana" },
+            { location: [-1.9441, 29.8744], cases: 90, country: "Rwanda" },
+            { location: [-18.8792, 47.5079], cases: 50, country: "Madagascar" },
+            { location: [12.6392, -8.0029], cases: 75, country: "Mali" },
+            { location: [4.3517, 18.5550], cases: 85, country: "CAR" },
+            { location: [-15.3875, 28.3228], cases: 95, country: "Zambia" },
+            { location: [12.5657, -7.4921], cases: 65, country: "Mali" },
+            { location: [8.7832, -55.4915], cases: 55, country: "Sierra Leone" }
+        ];
+
+        cancerDataAfrica.forEach(function(data) {
+            let circle = L.circle(data.location, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5,
+                radius: data.cases * 1000  // Adjust scaling as necessary
+            }).addTo(map);
+
+            // Create a label inside the circle
+            let label = L.divIcon({
+                className: 'circle-label',
+                html: `<div style="width: ${data.cases}px; height: ${data.cases}px; display: flex; justify-content: center; align-items: center;">${data.cases}</div>`,
+                iconSize: [data.cases, data.cases]
+            });
+
+            L.marker(data.location, { icon: label }).addTo(map);
+        });
+    </script>
+</body>
+</html>
